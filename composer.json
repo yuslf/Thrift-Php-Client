@@ -1,6 +1,6 @@
 {
-    "name": "yuslf/Thrift-Php-Client",
-    "description": "Thrift-Php-Client",
+    "name": "yuslf/thrift-php-client",
+    "description": "thrift-php-client",
     "type": "library",
     "license": "MIT",
     "keywords": ["Thrift", "PHP"],
