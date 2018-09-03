@@ -19,7 +19,7 @@
         "psr-0": {
             "Thrift": "lib/"
         }
-    }
+    },
 
     "scripts": {
         "pre-install-cmd": [
