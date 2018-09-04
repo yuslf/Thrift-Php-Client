@@ -12,23 +12,12 @@
         }
     ],
     "require": {
-        "php": ">=5.3.0"
+        "php": ">=5.4.0"
     },
 
     "autoload": {
         "psr-0": {
             "Thrift": "lib/"
         }
-    },
-
-    "scripts": {
-        "pre-install-cmd": [
-            "if [ ! -d \"IDL\" ]; then mkdir IDL; fi;",
-            "if [ ! -d \"Rpc\" ]; then mkdir Rpc; fi;"
-        ],
-        "pre-update-cmd": [
-            "if [ ! -d \"IDL\" ]; then mkdir IDL; fi;",
-            "if [ ! -d \"Rpc\" ]; then mkdir Rpc; fi;"
-        ]
     }
 }
