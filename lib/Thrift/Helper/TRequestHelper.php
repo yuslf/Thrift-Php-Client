@@ -18,7 +18,7 @@ class TRequestHelper
 
     protected static $transport;
 
-    public function initLoader($namespace, $baseDir)
+    public static function initLoader($namespace, $baseDir)
     {
         static::$baseDir = $baseDir;
         static::$namespace = $namespace;

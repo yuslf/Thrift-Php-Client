@@ -14,8 +14,13 @@ class TBinSocketRequestHelper extends TRequestHelper
 
     protected static $socket;
 
-    public function initTransport($ip, $port)
+    public static function initClient($ip, $port)
     {
+        if (empty(static::$namespace)) {
+            throw new \Exception('没有设置Thrift客户端命名空间，请先调用 initLoader 方法！');
+            return false;
+        }
+
         static::$ip = $ip;
         static::$port = $port;
 
@@ -23,16 +28,6 @@ class TBinSocketRequestHelper extends TRequestHelper
         static::$transport = new TFramedTransport(static::$socket);
 
         static::$protocol = new TBinaryProtocol(static::$transport);
-
-        return static::$transport;
-    }
-
-    public function initClient()
-    {
-        if (empty(static::$namespace)) {
-            throw new \Exception('没有设置Thrift客户端命名空间，请先调用 initLoader 方法！');
-            return false;
-        }
 
         $namespace = explode("\\", static::$namespace);
 
@@ -45,6 +40,16 @@ class TBinSocketRequestHelper extends TRequestHelper
 
         static::$client = new $client(static::$protocol);
 
+        return true;
+    }
+
+    public static function getTransport()
+    {
+        return static::$transport;
+    }
+
+    public static function getClient()
+    {
         return static::$client;
     }
 
