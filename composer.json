@@ -24,13 +24,11 @@
     "scripts": {
 
         "post-package-install": [
-            "Thrift\\Tools\\TScript::test2",
-            "Thrift\\Tools\\TScript::test"
+            "Thrift\\Tools\\TScript::test2"
         ],
 
         "post-package-update": [
-            "Thrift\\Tools\\TScript::test2",
-            "Thrift\\Tools\\TScript::test"
+            "Thrift\\Tools\\TScript::test2"
         ]
     }
 }

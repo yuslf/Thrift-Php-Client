@@ -21,6 +21,9 @@ class TScript
         $vendorDir = $event->getComposer()->getConfig()->get('vendor-dir');
         var_dump($vendorDir);
         var_dump(getcwd());
-        // do stuff
+
+        file_put_contents('/home/manhong/thrift_cli/aaa', $vendorDir . '--' . getcwd());
+
+
     }
 }
