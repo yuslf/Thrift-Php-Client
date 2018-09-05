@@ -4,7 +4,7 @@
     "type": "library",
     "license": "MIT",
     "keywords": ["Thrift", "PHP"],
-    "version": "0.2.4",
+    "version": "0.2.5",
     "authors": [
         {
             "name": "Man Hong",
@@ -19,16 +19,5 @@
         "psr-0": {
             "Thrift": "lib/"
         }
-    },
-
-    "scripts": {
-
-        "post-package-install": [
-            "Thrift\\Tools\\TScript::test2"
-        ],
-
-        "post-package-update": [
-            "Thrift\\Tools\\TScript::test2"
-        ]
     }
 }
