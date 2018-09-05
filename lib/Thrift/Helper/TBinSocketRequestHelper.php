@@ -8,93 +8,99 @@ use Thrift\Transport\TFramedTransport;
 
 class TBinSocketRequestHelper extends TRequestHelper
 {
-    protected static $ip;
+    protected $ip;
 
-    protected static $port;
+    protected $port;
 
-    protected static $socket;
+    protected $socket;
 
-    public static function initClient($ip, $port)
+    public function client($ip, $port)
     {
-        if (empty(static::$namespace)) {
+        if (empty($this->namespace)) {
             throw new \Exception('没有设置Thrift客户端命名空间，请先调用 initLoader 方法！');
             return false;
         }
 
-        static::$ip = $ip;
-        static::$port = $port;
+        $this->ip = $ip;
+        $this->port = $port;
 
-        static::$socket = new TSocket(static::$ip, static::$port);
-        static::$transport = new TFramedTransport(static::$socket);
+        $this->socket = new TSocket($this->ip, $this->port);
+        $this->transport = new TFramedTransport($this->socket);
 
-        static::$protocol = new TBinaryProtocol(static::$transport);
+        $this->protocol = new TBinaryProtocol($this->transport);
 
-        $namespace = explode("\\", static::$namespace);
+        $namespace = explode("\\", $this->namespace);
 
-        $client = static::$namespace . "\\" . $namespace[count($namespace) - 1] . 'Client';
+        $client = $this->namespace . "\\" . $namespace[count($namespace) - 1] . 'Client';
 
         if (! class_exists($client)) {
             throw new \Exception('Thrift客户端不存在，请先调用 initLoader 方法！');
             return false;
         }
 
-        static::$client = new $client(static::$protocol);
+        $this->client = new $client($this->protocol);
 
-        return true;
+        return $this;
     }
 
-    public static function getTransport()
+    public function getTransport()
     {
-        return static::$transport;
+        return $this->transport;
     }
 
-    public static function getClient()
+    public function getClient()
     {
-        return static::$client;
+        return $this->client;
     }
 
-    public static function __callStatic($func, $args)
+    public function __call($func, $args)
     {
-        if (empty(static::$client)) {
+        if (empty($this->client)) {
             throw new \Exception('Thrift客户端不存在，请先调用 initLoader 和 initClient 方法！');
             return false;
         }
 
-        if (! method_exists(static::$client, $func)) {
+        if (! method_exists($this->client, $func)) {
             throw new \Exception('Thrift客户端方法:' . $func . ' 不存在！');
             return false;
         }
 
-        $is_once = ! static::$transport->isOpen();
+        $is_once = ! $this->transport->isOpen();
 
         if ($is_once) {
-            static::$transport->open();
+            $this->transport->open();
         }
 
-        $ret = call_user_func_array(array(static::$client, $func), $args);
+        $ret = call_user_func_array(array($this->client, $func), $args);
 
         if ($is_once) {
-            static::$transport->close();
+            $this->transport->close();
         }
 
         return $ret;
     }
 
-    public static function open()
+    public function open()
     {
-        if (! static::$transport->isOpen()) {
-            static::$transport->open();
+        if (! $this->transport->isOpen()) {
+            $this->transport->open();
         }
 
-        return true;
+        return $this;
     }
 
-    public static function close()
+    public function close()
     {
-        if (static::$transport->isOpen()) {
-            static::$transport->close();
+        if ($this->transport->isOpen()) {
+            $this->transport->close();
         }
 
-        return true;
+        return $this;
+    }
+
+    public function struct($name, $val)
+    {
+        $struct = $this->namespace . "\\" . $name;
+        return new $struct($val);
     }
 }

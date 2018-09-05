@@ -6,31 +6,36 @@ use Thrift\ClassLoader\ThriftClassLoader;
 
 class TRequestHelper
 {
-    protected static $loader;
+    protected $loader;
 
-    protected static $baseDir;
+    protected $baseDir;
 
-    protected static $namespace;
+    protected $namespace;
 
-    protected static $client;
+    protected $client;
 
-    protected static $protocol;
+    protected $protocol;
 
-    protected static $transport;
+    protected $transport;
 
-    public static function initLoader($namespace, $baseDir)
+    public function loader($namespace, $baseDir)
     {
-        static::$baseDir = $baseDir;
-        static::$namespace = $namespace;
+        $this->baseDir = $baseDir;
+        $this->namespace = $namespace;
 
         $loader = new ThriftClassLoader();
         $loader->registerNamespace($namespace, $baseDir . '/gen-php');
         $loader->registerDefinition($namespace, $baseDir . '/gen-php');
         $loader->register();
 
-        static::$loader = $loader;
+        $this->loader = $loader;
 
-        return static::$loader;
+        return $this;
+    }
+
+    public function getLoader()
+    {
+        return $this->loader;
     }
 
 }
